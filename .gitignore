@@ -5,9 +5,10 @@
 *.ali
 
 # Database files
-gnatinspect.db
+gnatinspect*
 *.bexch
 x_cleaner-loc.xml
+obj/gpsauto.cgpr
 
 # Executables
 bin/*.exe
@@ -15,3 +16,4 @@ bin/*.exe
 # Temp compiler files
 obj/b__*.adb
 obj/b__*.ads
+obj/*.tmp
