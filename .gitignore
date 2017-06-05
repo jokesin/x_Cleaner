@@ -1,0 +1,17 @@
+# Object file
+*.o
+
+# Ada Library Information
+*.ali
+
+# Database files
+gnatinspect.db
+*.bexch
+x_cleaner-loc.xml
+
+# Executables
+bin/*.exe
+
+# Temp compiler files
+obj/b__*.adb
+obj/b__*.ads

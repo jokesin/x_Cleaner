@@ -1,0 +1,10 @@
+
+#include <winresrc.h>
+
+
+/* Manifest enabling XP theme on Win XP */
+1 RT_MANIFEST manifest.xml
+
+/* Main icon */
+2 ICON "main.ico"
+
