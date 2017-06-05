@@ -46,6 +46,9 @@ package body Callbacks is
    procedure Show_About_Dialog;
    -- Menu_Select_Cb --
 
+   --TODO
+   --check if cleaning is runnung
+
    procedure Menu_Select_Cb(Window : in out GWindows.Base.Base_Window_Type'Class;
                             Item   : in     Integer)
    is
@@ -55,7 +58,6 @@ package body Callbacks is
 
       Sys_Drives : Drive_Devices.Drives := Get_Drives;
       Selected_Drive : Integer;
-
 
    begin
       case Item is
@@ -102,6 +104,9 @@ package body Callbacks is
          when others =>
             null;
       end case;
+
+
+
    end Menu_Select_Cb;
 
    -- Main_Close_Cb --

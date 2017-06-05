@@ -96,7 +96,9 @@ package body Main_Window is
          Append_Item(Clear_Sub_Menu,"B&ruce Schneier's Algorithm [7 passes]",IDM_SCHNEIER);
 
          Append_Menu(Clear_Menu,"&Clear drive",Clear_Sub_Menu);
+
          Append_Item(Clear_Menu,"&Cancel",IDM_CANCEL);
+         State(Clear_Menu,Command,IDM_CANCEL,Grayed);
       end Popup_Menu;
 
       -- ListView --

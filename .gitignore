@@ -17,3 +17,5 @@ bin/*.exe
 obj/b__*.adb
 obj/b__*.ads
 obj/*.tmp
+
+.#*#

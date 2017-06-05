@@ -55,7 +55,11 @@ package Drive_Devices is
                       Chosen_Algorithm : in Algorithm := HMG_IS5;
                       Buf_Size_Mb_Mult : Win32.ULONG := 1048576);
 
-   private
+      procedure Set_Cleaning_State(Drive : out Drive_Record;
+                                   State : Boolean);
+      function Is_Cleaning(Drive       : Drive_Record)
+                           return Boolean;
+      private
 
       type Drive_Record(Label_Length:Natural;FS_Length:Natural) is tagged
          record
@@ -64,6 +68,7 @@ package Drive_Devices is
             File_System : String(1..FS_Length);
             M_Type      : Win32.Winioctl.MEDIA_TYPE;
             Size        : Win32.ULONGLONG;
+            Is_Cleaning : Boolean;
          end record;
 
       ---------------------------------------

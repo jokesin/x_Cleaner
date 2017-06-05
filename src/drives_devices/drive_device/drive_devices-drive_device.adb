@@ -54,30 +54,32 @@ package body Drive_Device is
 
       use type IC.unsigned_long,IC.long,IC.int;
 
---        Ret_Val : Message_Box_Result := Message_Box(GWindows.Base.Base_Window_Type(Main_Window.Get_X_Main.all),
---                                                    "Attention!","All data will be erased. Continue?",
---                                                    Yes_No_Box,Question_Icon);
-      Dialog        : Window_Type;
-      OK_Button,
-      Cancel_Button : Default_Button_Type;
-      Font          : Font_Type;
-      Ret_Val       : Integer;
-
-      ---
-   begin -- for Clear_Data
-      Create_As_Dialog(Dialog,"Attention!",Width => 190,Height => 100);
-      Font.Create_Stock_Font(Default_GUI);
-      Dialog.Set_Font(Font);
-      Create_Label(Dialog,"All data will be erased. Continue?",10,10,
-                   Dialog.Client_Area_Width - 20, 25, Center);
-
-      OK_Button.Create(Dialog,"O&k",10,35,75,25,ID => GWindows.Constants.IDOK);
-      Cancel_Button.Create(Dialog,"&Cancel",95,35,75,25,ID => GWindows.Constants.IDCANCEL);
-
-      -- Set center pos
-      Main_Window.Get_X_Main.Set_Dialog_Center_Pos(Dialog);
       --
-      Ret_Val := Show_Dialog(Dialog);
+      function Show_Attention_Message_Dialog return Integer is
+         Dialog        : Window_Type;
+         OK_Button,
+         Cancel_Button : Default_Button_Type;
+         Font          : Font_Type;
+      begin
+         Create_As_Dialog(Dialog,"Attention!",Width => 190,Height => 100);
+         Font.Create_Stock_Font(Default_GUI);
+         Dialog.Set_Font(Font);
+         Create_Label(Dialog,"All data will be erased. Continue?",10,10,
+                      Dialog.Client_Area_Width - 20, 25, Center);
+
+         OK_Button.Create(Dialog,"O&k",10,35,75,25,ID => GWindows.Constants.IDOK);
+         Cancel_Button.Create(Dialog,"&Cancel",95,35,75,25,ID => GWindows.Constants.IDCANCEL);
+
+         -- Set center pos
+         Main_Window.Get_X_Main.Set_Dialog_Center_Pos(Dialog);
+
+         return Show_Dialog(Dialog);
+      end Show_Attention_Message_Dialog;
+      --
+      Ret_Val       : Integer;
+   begin -- for Clear_Data
+
+      Ret_Val := Show_Attention_Message_Dialog;
       case Ret_Val is
          when GWindows.Constants.IDOK =>
             declare
@@ -85,6 +87,7 @@ package body Drive_Device is
                                                                                  Buf_Size_Mb_Mult * 1,
                                                                                  Drive_Index);
             begin
+               Clr_Drv.Set_Cleaning_State(True);
                Clr_Drv.Clear(Clear_Algorithm => Chosen_Algorithm);
             end;
             when others =>
@@ -128,6 +131,18 @@ package body Drive_Device is
       end if;
    end "=";
 
+   -- Set_Cleaning_State
+   procedure Set_Cleaning_State(Drive : out Drive_Record;
+                                State : Boolean) is
+   begin
+      Drive.Is_Cleaning := State;
+   end Set_Cleaning_State;
+
+   -- Is_Cleaning
+   function Is_Cleaning(Drive : Drive_Record) return Boolean is
+   begin
+      return Drive.Is_Cleaning;
+   end Is_Cleaning;
 
    ----------------------------------
    -------- PRIVATE SECTION ---------
