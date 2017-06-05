@@ -102,9 +102,9 @@ package body Clear_Drive_Device is
 
    end Coordinator;
 
+   -------------------------------------------------------------------------------------
+
    -- Clear --
-
-
    procedure Clear(Self            : access Clear_Drive_Record;
                    Clear_Algorithm : Algorithm)
    is

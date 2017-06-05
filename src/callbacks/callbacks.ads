@@ -30,6 +30,8 @@ package Callbacks is
    IDM_SCHNEIER       : constant := 203;
    IDM_DoD5220_22_M_E : constant := 204;
 
+   IDM_CANCEL         : constant := 205;
+
    procedure Menu_Select_Cb(Window : in out GWindows.Base.Base_Window_Type'Class;
                             Item   : in     Integer);
 
