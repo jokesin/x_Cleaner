@@ -35,6 +35,8 @@ package Main_Window is
          procedure Do_Context_Menu(Window : in out GWindows.Base.Base_Window_Type'Class;
                                    X      : in     Integer;
                                    Y      : in     Integer);
+--           overriding
+--           procedure On_Show(Window : in out GWindows.Base.Base_Window_Type'Class);
       end Popup_Menu;
 
       -- ListView

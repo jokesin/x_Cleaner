@@ -70,6 +70,7 @@ package body Callbacks is
          when IDM_HMG_IS5 =>
             Selected_Drive := Sys_Drives.Get_Selected_Index;
             if Selected_Drive >= 0 then
+               Sys_Drives.Get_Vector.Element(Selected_Drive).Set_Cleaning_State(True);
                Sys_Drives.Get_Vector.Element(Selected_Drive).Clear(Selected_Drive,
                                                                    Chosen_Algorithm => HMG_IS5);
             end if;

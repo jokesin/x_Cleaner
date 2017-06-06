@@ -55,9 +55,9 @@ package Drive_Devices is
                       Chosen_Algorithm : in Algorithm := HMG_IS5;
                       Buf_Size_Mb_Mult : Win32.ULONG := 1048576);
 
-      procedure Set_Cleaning_State(Drive : out Drive_Record;
+      procedure Set_Cleaning_State(Drive : in out Drive_Record;
                                    State : Boolean);
-      function Is_Cleaning(Drive       : Drive_Record)
+      function Is_Cleaning(Drive : Drive_Record)
                            return Boolean;
       private
 

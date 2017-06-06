@@ -71,7 +71,10 @@ package body Main_Window is
                                    X      : in     Integer;
                                    Y      : in     Integer)
          is
-            use GWindows.Types;
+            use GWindows.Types,
+                Drive_Devices;
+
+            Sys_Drives : Drives := Get_Drives;
             Item,SubItem : Integer := 0;
             Cursor_Pos : aliased POINT := POINT'(LONG(X),LONG(Y));
          begin
@@ -82,6 +85,19 @@ package body Main_Window is
             X_Main_Window_Type(Window).Volume_List.Item_At_Position(Point_Type'(Integer(Cursor_Pos.X),
                                                                     Integer(Cursor_Pos.Y)),Item,SubItem);
             Drive_Devices.Get_Drives.Set_Selected_Index(Item);
+
+            declare
+               Sys_Drive : Drive_Device.Drive_Record := Sys_Drives.Get_Vector.Element(Item);
+            begin
+               if not Sys_Drive.Is_Cleaning then
+                  State(Clear_Menu,Command,IDM_CANCEL,Disabled);
+                  State(Clear_Menu,Position,1,Enabled);
+               else
+                  State(Clear_Menu,Command,IDM_CANCEL,Enabled);
+                  State(Clear_Menu,Position,1,Disabled);
+               end if;
+            end;
+
             Display_Context_Menu(X_Main_Window_Type(Window),Clear_Menu,0,X,Y);
          end Do_Context_Menu;
 
@@ -98,7 +114,7 @@ package body Main_Window is
          Append_Menu(Clear_Menu,"&Clear drive",Clear_Sub_Menu);
 
          Append_Item(Clear_Menu,"&Cancel",IDM_CANCEL);
-         State(Clear_Menu,Command,IDM_CANCEL,Grayed);
+
       end Popup_Menu;
 
       -- ListView --
