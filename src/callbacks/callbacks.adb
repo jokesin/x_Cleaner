@@ -58,7 +58,6 @@ package body Callbacks is
 
       Sys_Drives : Drive_Devices.Drives := Get_Drives;
       Selected_Drive : Integer;
-
    begin
       case Item is
          when IDM_Exit =>
@@ -70,9 +69,8 @@ package body Callbacks is
          when IDM_HMG_IS5 =>
             Selected_Drive := Sys_Drives.Get_Selected_Index;
             if Selected_Drive >= 0 then
+               Sys_Drives.Set_Cleaning_State(Selected_Drive,True);
                Sys_Drives.Get_Vector.Element(Selected_Drive).Clear(Selected_Drive, Chosen_Algorithm => HMG_IS5);
---                 Sys_Drives.Get_Vector.Element(Selected_Drive).Clear(Selected_Drive,
---                                                                     Chosen_Algorithm => HMG_IS5);
             end if;
 
          when IDM_HMG_IS5_ENH =>

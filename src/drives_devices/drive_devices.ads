@@ -57,7 +57,12 @@ package Drive_Devices is
 
       function Is_Cleaning(Drive : Drive_Record)
                            return Boolean;
+
+      procedure Set_Cleaning_State(Drive : in out Drive_Record;
+                                   State : Boolean);
       private
+
+
 
       type Drive_Record(Label_Length:Natural;FS_Length:Natural) is tagged
          record
@@ -162,7 +167,7 @@ package Drive_Devices is
    procedure Init;
    function Get_Drives return Drives;
 
-   function Get_Vector(Drives : access Drives_Record'Class) return Drives_Vector;
+   function Get_Vector(Drives : access Drives_Record'Class) return access Drives_Vector;
 
    procedure Set_Selected_Index(Drives : access Drives_Record;
                                 Index  : Integer);

@@ -141,6 +141,13 @@ package body Drive_Device is
    -------- PRIVATE SECTION ---------
    ----------------------------------
 
+   procedure Set_Cleaning_State(Drive : in out Drive_Record;
+                                State : Boolean)
+   is
+   begin
+      Drive.Is_Cleaning := State;
+   end Set_Cleaning_State;
+
    package body Clear_Drive_Device is separate;
 
 

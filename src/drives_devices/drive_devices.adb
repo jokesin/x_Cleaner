@@ -72,10 +72,10 @@ package body Drive_Devices is
    end Get_Drives;
 
 
-   function Get_Vector(Drives : access Drives_Record'Class) return Drives_Vector
+   function Get_Vector(Drives : access Drives_Record'Class) return access Drives_Vector
    is
    begin
-      return Drives.Drives;
+      return Drives.Drives'Access;
    end Get_Vector;
 
    function Get_Selected_Index(Drives : access Drives_Record) return Integer
@@ -138,14 +138,16 @@ package body Drive_Devices is
                                 Index  : Integer;
                                 State  : Boolean)
    is
-      procedure Set_C_State(E : in out Drive_Device.Drive_Record) is
+      use Drive_Device;
+
+      procedure Set_C_State(E : in out Drive_Record) is
       begin
-         E.Is_Cleaning := State;
+         E.Set_Cleaning_State(State);
       end Set_C_State;
 
-      D_Vector : Drives_Vector := Drives.Get_Vector;
+      --D_Vector : Drives_Vector := ;
    begin
-      D_Vector.Update_Element(Index, Set_C_State'Access);
+      Drives.Get_Vector.Update_Element(Index, Set_C_State'Access);
    end Set_Cleaning_State;
 
 
