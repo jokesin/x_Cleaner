@@ -87,7 +87,6 @@ package body Drive_Device is
                                                                                  Buf_Size_Mb_Mult * 1,
                                                                                  Drive_Index);
             begin
-               Clr_Drv.Set_Cleaning_State(True);
                Clr_Drv.Clear(Clear_Algorithm => Chosen_Algorithm);
             end;
             when others =>
@@ -131,12 +130,6 @@ package body Drive_Device is
       end if;
    end "=";
 
-   -- Set_Cleaning_State
-   procedure Set_Cleaning_State(Drive : out Drive_Record;
-                                State : Boolean) is
-   begin
-      Drive.Is_Cleaning := State;
-   end Set_Cleaning_State;
 
    -- Is_Cleaning
    function Is_Cleaning(Drive : Drive_Record) return Boolean is

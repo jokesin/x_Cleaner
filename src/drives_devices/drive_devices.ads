@@ -55,8 +55,6 @@ package Drive_Devices is
                       Chosen_Algorithm : in Algorithm := HMG_IS5;
                       Buf_Size_Mb_Mult : Win32.ULONG := 1048576);
 
-      procedure Set_Cleaning_State(Drive : in out Drive_Record;
-                                   State : Boolean);
       function Is_Cleaning(Drive : Drive_Record)
                            return Boolean;
       private
@@ -136,8 +134,6 @@ package Drive_Devices is
          procedure Clear(Self            : access Clear_Drive_Record;
                          Clear_Algorithm : Algorithm);
 
-
-
          function Init(Drive       : Drive_Record;
                        Buf_Size    : Win32.ULONG;
                        Drive_Index : Natural)
@@ -171,6 +167,10 @@ package Drive_Devices is
    procedure Set_Selected_Index(Drives : access Drives_Record;
                                 Index  : Integer);
    function Get_Selected_Index(Drives : access Drives_Record) return Integer;
+
+   procedure Set_Cleaning_State(Drives :access Drives_Record;
+                                Index  : Integer;
+                                State : Boolean);
 
    Init_Drive_Error : exception;
 

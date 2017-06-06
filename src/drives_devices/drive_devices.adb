@@ -131,5 +131,22 @@ package body Drive_Devices is
    end Init;
 
 
+   ---
+   --Set_Cleaning_State
+   ---
+   procedure Set_Cleaning_State(Drives : access Drives_Record;
+                                Index  : Integer;
+                                State  : Boolean)
+   is
+      procedure Set_C_State(E : in out Drive_Device.Drive_Record) is
+      begin
+         E.Is_Cleaning := State;
+      end Set_C_State;
+
+      D_Vector : Drives_Vector := Drives.Get_Vector;
+   begin
+      D_Vector.Update_Element(Index, Set_C_State'Access);
+   end Set_Cleaning_State;
+
 
 end Drive_Devices;
