@@ -67,15 +67,8 @@ package body Callbacks is
          when IDM_About=>
             Show_About_Dialog;
 
+
          when IDM_HMG_IS5 =>
-            declare
-               use Main_Window.List_View;
-               X_Main      : X_Main_Window := Main_Window.Get_X_Main;
-               --X_List      : X_List_View   := X_Main.Get_Volume_List;
-               X_List     : X_List_View   := Get_Volume_List(X_Main_Window_Type(Window));
-            begin
-               null;
-            end;
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
             if Selected_Drive >= 0 then
                Sys_Drives.Set_Cleaning_State(Selected_Drive,True);
