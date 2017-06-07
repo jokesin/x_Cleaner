@@ -74,7 +74,7 @@ package body Main_Window is
             use GWindows.Types,
                 Drive_Devices;
 
-            Sys_Drives : Drives := Get_Drives;
+            Sys_Drives : Drives_Ptr := Get_Drives;
             Item,SubItem : Integer := 0;
             Cursor_Pos : aliased POINT := POINT'(LONG(X),LONG(Y));
          begin
@@ -84,10 +84,10 @@ package body Main_Window is
             end if;
             X_Main_Window_Type(Window).Volume_List.Item_At_Position(Point_Type'(Integer(Cursor_Pos.X),
                                                                     Integer(Cursor_Pos.Y)),Item,SubItem);
-            Drive_Devices.Get_Drives.Set_Selected_Index(Item);
-
+            --Drive_Devices.Get_Drives.Set_Selected_Index(Item);
+            X_Main_Window_Type(Window).Volume_List.Selected_Index := Item;
             declare
-               Sys_Drive : Drive_Device.Drive_Record := Sys_Drives.Get_Vector.Element(Item);
+               Sys_Drive : Drive_Device.Drive_Record := Sys_Drives.Element(Item);
             begin
                if not Sys_Drive.Is_Cleaning then
                   State(Clear_Menu,Command,IDM_CANCEL,Disabled);
@@ -414,15 +414,15 @@ package body Main_Window is
          use Drive_Devices.Drive_Device,
              Drive_Devices.Drives_Container;
          use type Ada.Containers.Count_Type;
-         Sys_Drives : Drive_Devices.Drives := Drive_Devices.Get_Drives;
-         L : Natural;
+         Sys_Drives : Drive_Devices.Drives_Ptr := Drive_Devices.Get_Drives;
+         L          : Natural;
       begin
-         if Sys_Drives.Get_Vector.Length > 0 then
-            L := Sys_Drives.Get_Vector.Last_Index;
+         if Sys_Drives.Length > 0 then
+            L := Sys_Drives.Last_Index;
             for K in reverse 0..L loop
-               Control.Add_Row(Letter         => Sys_Drives.Get_Vector.Element(K).Get_Letter,
+               Control.Add_Row(Letter         => Sys_Drives.Element(K).Get_Letter,
                                Size           =>
-                                 ULONGLONG'Image(Sys_Drives.Get_Vector.Element(K).Get_Size / (1024 * 1024)));
+                                 ULONGLONG'Image(Sys_Drives.Element(K).Get_Size / (1024 * 1024)));
             end loop;
          end if;
 
@@ -458,6 +458,20 @@ package body Main_Window is
                           LParam => GWindows.Types.Lparam(Progress_Value),
                           Index  => Item);
       end Set_Progress_Clean_Value;
+
+      -- Set_Selected_Item --
+      procedure Set_Selected_Index(Control : in out X_List_View_Type;
+                                   Index   : Integer) is
+      begin
+         Control.Selected_Index := Index;
+      end Set_Selected_Index;
+
+
+      -- Get_Selected_Index --
+      function Get_Selected_Index(Control : X_List_View_Type) return Integer is
+      begin
+         return Control.Selected_Index;
+      end Get_Selected_Index;
 
    end List_View;
 
@@ -510,4 +524,7 @@ package body Main_Window is
          null;
       end if;
    end Set_Dialog_Center_Pos;
+
+
+
 end Main_Window;

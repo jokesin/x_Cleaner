@@ -58,40 +58,39 @@ package body Drive_Devices is
    use Ada.Strings.Unbounded;
    use Win32.Winnt;
 
-   Sys_Drives : Drives := new Drives_Record;
+   Sys_Drives : aliased Drives_Vector := Drives_Vector_Empty;
 
    package body Drive_Device is separate;
 
    -- ACCESSORS --
 
-   function Get_Drives return Drives
+   function Get_Drives return access Drives_Vector
    is
-
    begin
-      return Sys_Drives;
+      return Sys_Drives'Access;
    end Get_Drives;
 
 
-   function Get_Vector(Drives : access Drives_Record'Class) return access Drives_Vector
-   is
-   begin
-      return Drives.Drives'Access;
-   end Get_Vector;
+--     function Get_Vector(Drives : access Drives_Record'Class) return access Drives_Vector
+--     is
+--     begin
+--        return Drives.Drives'Access;
+--     end Get_Vector;
 
-   function Get_Selected_Index(Drives : access Drives_Record) return Integer
-   is
-   begin
-      return Drives.Selected;
-   end Get_Selected_Index;
-
-   -- SETTERS --
-
-   procedure Set_Selected_Index(Drives : access Drives_Record;
-                                Index  : Integer)
-   is
-   begin
-      Drives.Selected := Index;
-   end Set_Selected_Index;
+--     function Get_Selected_Index(Drives : access Drives_Record) return Integer
+--     is
+--     begin
+--        return Drives.Selected;
+--     end Get_Selected_Index;
+--
+--     -- SETTERS --
+--
+--     procedure Set_Selected_Index(Drives : access Drives_Record;
+--                                  Index  : Integer)
+--     is
+--     begin
+--        Drives.Selected := Index;
+--     end Set_Selected_Index;
 
    ---------------------------------------
    -- CONSTRUCTORS --
@@ -111,7 +110,7 @@ package body Drive_Devices is
       while Drive_Mask /= 0 loop
          if (Drive_Mask and 1) = 1 and then
            Drive_Device.Init(Drive_Letter,Ret_Drive) then
-            Sys_Drives.Drives.Append(Ret_Drive.all);
+            Sys_Drives.Append(Ret_Drive.all);
          end if;
 
          Drive_Letter:=Character'Succ(Drive_Letter);
@@ -134,7 +133,7 @@ package body Drive_Devices is
    ---
    --Set_Cleaning_State
    ---
-   procedure Set_Cleaning_State(Drives : access Drives_Record;
+   procedure Set_Cleaning_State(Drives : access Drives_Vector;
                                 Index  : Integer;
                                 State  : Boolean)
    is
@@ -147,7 +146,7 @@ package body Drive_Devices is
 
       --D_Vector : Drives_Vector := ;
    begin
-      Drives.Get_Vector.Update_Element(Index, Set_C_State'Access);
+      Drives.Update_Element(Index, Set_C_State'Access);
    end Set_Cleaning_State;
 
 

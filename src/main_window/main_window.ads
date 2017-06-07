@@ -101,6 +101,10 @@ package Main_Window is
       procedure Set_Progress_Clean_Value(Control        : in out X_List_View_Type;
                                          Item           : Natural;
                                          Progress_Value : Natural);
+      procedure Set_Selected_Index(Control : in out X_List_View_Type;
+                                   Index   : Integer);
+      function Get_Selected_Index(Control : X_List_View_Type) return Integer;
+
       overriding
       procedure On_Notify
         (List_View    : in out X_List_View_Type;
@@ -110,7 +114,10 @@ package Main_Window is
       --  Handles Notify Messages
 
    private
-      type X_List_View_Type is new GWindows.Common_Controls.List_View_Control_Type with null record;
+      type X_List_View_Type is new GWindows.Common_Controls.List_View_Control_Type with
+         record
+            Selected_Index : Integer;
+         end record;
 
    end List_View;
 

@@ -160,31 +160,37 @@ package Drive_Devices is
    package Drives_Container is new Ada.Containers.Indefinite_Vectors(Index_Type   => Natural,
                                                                      Element_Type => Drive_Device.Drive_Record,
                                                                      "="          => Drive_Device."=");
-   type Drives_Vector is new Drives_Container.Vector with null record;
+   type Drives_Vector is new Drives_Container.Vector with private;
+   Drives_Vector_Empty : constant Drives_Vector;
 
-   type Drives_Record is tagged private;
-   type Drives is access all Drives_Record;
+   type Drives_Ptr is access all Drives_Vector;
+
    procedure Init;
-   function Get_Drives return Drives;
-
-   function Get_Vector(Drives : access Drives_Record'Class) return access Drives_Vector;
-
-   procedure Set_Selected_Index(Drives : access Drives_Record;
-                                Index  : Integer);
-   function Get_Selected_Index(Drives : access Drives_Record) return Integer;
-
-   procedure Set_Cleaning_State(Drives :access Drives_Record;
+   function Get_Drives return access Drives_Vector;
+   procedure Set_Cleaning_State(Drives : access Drives_Vector;
                                 Index  : Integer;
-                                State : Boolean);
+                                State  : Boolean);
+
+   --type Drives_Record is tagged private;
+   --type Drives is access all Drives_Vector;--Drives_Record;
+   --function Get_Vector(Drives : access Drives_Record'Class) return access Drives_Vector;
+
+--     procedure Set_Selected_Index(Drives : access Drives_Record;
+--                                  Index  : Integer);
+--     function Get_Selected_Index(Drives : access Drives_Record) return Integer;
+
+
 
    Init_Drive_Error : exception;
 
 private
+   type Drives_Vector is new Drives_Container.Vector with null record;
+   Drives_Vector_Empty : constant Drives_Vector := (Drives_Container.Vector with others => <>);
 
-   type Drives_Record is tagged
-      record
-         Drives   : Drives_Vector;
-         Selected : Integer; --cause of possible -1
-      end record;
+--     type Drives_Record is tagged
+--        record
+--           Drives   : aliased Drives_Vector;
+--           --Selected : Integer; --cause of possible -1
+--        end record;
 
 end Drive_Devices;
