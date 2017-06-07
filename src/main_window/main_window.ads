@@ -127,14 +127,16 @@ package Main_Window is
    type X_Main_Window is access all X_Main_Window_Type;
    function Get_X_Main return X_Main_Window;
    function Get_Main_Menu(Main_Window : access X_Main_Window_Type) return GWindows.Menus.Menu_Type;
-   function Get_Volume_List(Main_Window : access X_Main_Window_Type) return List_View.X_List_View;
+   function Get_Volume_List(Main_Window : X_Main_Window_Type) return List_View.X_List_View;
 
    procedure Set_Dialog_Center_Pos(Main_Window : access X_Main_Window_Type; Dialog : GWindows.Windows.Window_Type);
 private
    type X_Main_Window_Type is new GWindows.Windows.Main.Main_Window_Type with
       record
          Main_Menu   : GWindows.Menus.Menu_Type;
-         Volume_List : aliased List_View.X_List_View_Type;
+         Volume_List : List_View.X_List_View;
       end record;
 
+   overriding
+   procedure Finalize(Object : in out X_Main_Window_Type);
 end Main_Window;

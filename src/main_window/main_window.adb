@@ -18,6 +18,7 @@
 --------------------------------------------------------------------------------------
 
 with Ada.Unchecked_Conversion,
+     Ada.Unchecked_Deallocation,
      Ada.Characters.Conversions,
      Ada.Containers;
 
@@ -56,6 +57,8 @@ package body Main_Window is
 
    package IC renames Interfaces.C;
    package PB renames Progress_Bars;
+
+   use Main_Window.List_View;
 
    package body List_View is
       use Callbacks;
@@ -496,10 +499,10 @@ package body Main_Window is
    end Get_Main_Menu;
 
    -- Get_Volume_List --
-   function Get_Volume_List(Main_Window : access X_Main_Window_Type) return List_View.X_List_View
+   function Get_Volume_List(Main_Window : X_Main_Window_Type) return List_View.X_List_View
    is
    begin
-      return Main_Window.Volume_List'Access;
+      return Main_Window.Volume_List;
    end Get_Volume_List;
 
    -- Set_Dialog_Center_Pos --
@@ -526,5 +529,21 @@ package body Main_Window is
    end Set_Dialog_Center_Pos;
 
 
+   --------------
+   -- FINALIZATION
+   --------------
 
+
+   procedure Free is new Ada.Unchecked_Deallocation(X_List_View_Type,
+                                                    X_List_View);
+
+   overriding
+   procedure Finalize(Object : in out X_Main_Window_Type) is
+   begin
+      Free(Object.Volume_List);
+   end Finalize;
+
+
+begin
+   X_Main.Volume_List := new List_View.X_List_View_Type;
 end Main_Window;
