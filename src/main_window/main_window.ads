@@ -35,8 +35,8 @@ package Main_Window is
          procedure Do_Context_Menu(Window : in out GWindows.Base.Base_Window_Type'Class;
                                    X      : in     Integer;
                                    Y      : in     Integer);
---           overriding
---           procedure On_Show(Window : in out GWindows.Base.Base_Window_Type'Class);
+         --           overriding
+         --           procedure On_Show(Window : in out GWindows.Base.Base_Window_Type'Class);
       end Popup_Menu;
 
       -- ListView
@@ -84,20 +84,20 @@ package Main_Window is
                           Icon    : in Integer := 0);
 
       procedure Add_Row(Control        : in out X_List_View_Type;
-                        Letter         : Character;
-                        Size           : String;
-                        Algorithm      : String := "";
-                        Operation      : String := "";
+                        Letter         : GWindows.GCharacter;
+                        Size           : GWindows.GString;
+                        Algorithm      : GWindows.GString := "";
+                        Operation      : GWindows.GString := "";
                         Clean_Progress : Integer := 0);
 
       procedure Add_Drives(Control : in out X_List_View_Type);
 
       procedure Set_Algorithm_Name(Control        : in out X_List_View_Type;
                                    Item           : Natural;
-                                   Algorithm_Name : String);
+                                   Algorithm_Name : GWindows.GString);
       procedure Set_Operation_Name(Control        : in out X_List_View_Type;
                                    Item           : Natural;
-                                   Operation_Name : String);
+                                   Operation_Name : GWindows.GString);
       procedure Set_Progress_Clean_Value(Control        : in out X_List_View_Type;
                                          Item           : Natural;
                                          Progress_Value : Natural);

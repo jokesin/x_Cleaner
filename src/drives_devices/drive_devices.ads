@@ -30,7 +30,7 @@ with Ada.Containers.Indefinite_Vectors,
      Win32.Winioctl,
      Win32.Winnt;
 
-
+with GWindows;
 
 with Main_Window;
 
@@ -43,8 +43,8 @@ package Drive_Devices is
 
       type Drive_Record(Label_Length:Natural;FS_Length:Natural) is tagged private;
       type Drive is access all Drive_Record;
-      function Init(Letter : Character; The_Drive : out Drive) return Boolean;
-      function Get_Letter(Self : Drive_Record) return Character;
+      function Init(Letter : GWindows.GCharacter; The_Drive : out Drive) return Boolean;
+      function Get_Letter(Self : Drive_Record) return GWindows.GCharacter;
       function Get_Size(Self : Drive_Record) return Win32.ULONGLONG;
       function "="(Left,Right : Drive_Record) return Boolean;
 
@@ -66,9 +66,9 @@ package Drive_Devices is
 
       type Drive_Record(Label_Length:Natural;FS_Length:Natural) is tagged
          record
-            Letter      : Character;
-            Label       : String(1..Label_Length);
-            File_System : String(1..FS_Length);
+            Letter      : GWindows.GCharacter;
+            Label       : GWindows.GString(1..Label_Length);
+            File_System : GWindows.GString(1..FS_Length);
             M_Type      : Win32.Winioctl.MEDIA_TYPE;
             Size        : Win32.ULONGLONG;
             Is_Cleaning : Boolean;

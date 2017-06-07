@@ -68,11 +68,12 @@ is
 
          case Pass is
             when 1 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing 0x0...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing 0x0...");
             when 2 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing 0x1...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing 0x1...");
             when 3 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing random values...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) &
+                                             " : Writing random values...");
          end case;
 
          while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
@@ -102,9 +103,9 @@ is
 
          case Pass is
             when 1 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing 0x0...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing 0x0...");
             when 2 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing random values...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing random values...");
          end case;
 
          while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
@@ -134,11 +135,11 @@ is
 
          case Pass is
             when 1 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing 0x0...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing 0x0...");
             when 2 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing 0x1...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing 0x1...");
             when 3 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing random values...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing random values...");
          end case;
 
          while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
@@ -167,11 +168,11 @@ is
 
          case Pass is
             when 1 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing 0x1...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing 0x1...");
             when 2 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing 0x0...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing 0x0...");
             when 3..7 =>
-               Drv_List.Set_Operation_Name(Data.Drive_Index,Pass'Img & " : Writing random values...");
+               Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing random values...");
          end case;
 
          while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop

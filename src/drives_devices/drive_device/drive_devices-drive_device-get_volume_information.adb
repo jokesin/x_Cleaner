@@ -16,22 +16,23 @@
 --        You should have received a copy of the GNU General Public License
 --        along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------------
+with GWindows;use GWindows;
+with Win32; use Win32;
 
 separate (Drive_Devices.Drive_Device)
 
 
-function Get_Volume_Information(Drive_Letter : Character;
+function Get_Volume_Information(Drive_Letter : GCharacter;
                                 Volume_Info  : in out Volume_Information)
                                 return Win32.BOOL
 is
    use System,IC;
    IOCTL_DISK_GET_LENGTH_INFO : constant := 16#7405C#;
 
-   Drive_Name:String:="\\.\" & Drive_Letter & ":" & ASCII.NUL;
-   function To_LPCSTR is
-     new Ada.Unchecked_Conversion(Address, LPCSTR);
-   H_Device:HANDLE:=CreateFile
-     (lpFileName            => To_LPCSTR(Drive_Name'Address),
+   Drive_Name:GString:="\\.\" & Drive_Letter & ":" & GCharacter'Val (0);
+
+   H_Device:HANDLE:=CreateFileW
+     (lpFileName            => To_PCWSTR(Drive_Name'Address),
       dwDesiredAccess       => GENERIC_READ,
       dwShareMode           => FILE_SHARE_READ + FILE_SHARE_WRITE,
       lpSecurityAttributes  => null,

@@ -16,6 +16,7 @@
 --        You should have received a copy of the GNU General Public License
 --        along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------------
+with GWindows; use GWindows;
 
 separate (Drive_Devices)
 
@@ -34,7 +35,7 @@ package body Drive_Device is
 
 
 
-   function Get_Volume_Information(Drive_Letter : Character;
+   function Get_Volume_Information(Drive_Letter : GCharacter;
                                    Volume_Info  : in out Volume_Information)
                                    return Win32.BOOL is separate;
 
@@ -97,11 +98,11 @@ package body Drive_Device is
 
    -- Init --
 
-   function Init(Letter : Character; The_Drive : out Drive) return Boolean is separate;
+   function Init(Letter : GCharacter; The_Drive : out Drive) return Boolean is separate;
 
    -- ACCESSORS --
 
-   function Get_Letter(Self : Drive_Record) return Character
+   function Get_Letter(Self : Drive_Record) return GCharacter
    is
    begin
       return Self.Letter;

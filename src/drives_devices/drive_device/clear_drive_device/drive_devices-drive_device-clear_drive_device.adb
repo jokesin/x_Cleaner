@@ -550,15 +550,15 @@ package body Clear_Drive_Device is
       use type IC.unsigned_long;
       use System,GWindows.Base,GWindows.Message_Boxes;
 
-      Path_C : IC.char_array := IC.To_C("\\.\" & Self.Letter & ":");
+      Path_C : IC.wchar_array := IC.To_C("\\.\" & Self.Letter & ":");
    begin
-      Self.H_FS:= CreateFile(lpFileName            => To_PCSTR(Path_C'Address),
-                             dwDesiredAccess       => GENERIC_READ or GENERIC_WRITE,
-                             dwShareMode           => FILE_SHARE_READ or FILE_SHARE_WRITE,
-                             lpSecurityAttributes  => null,
-                             dwCreationDisposition => OPEN_EXISTING,
-                             dwFlagsAndAttributes  => FILE_FLAG_NO_BUFFERING or FILE_FLAG_WRITE_THROUGH,
-                             hTemplateFile         => Null_Address);
+      Self.H_FS:= CreateFileW(lpFileName            => To_PCWSTR(Path_C'Address),
+                              dwDesiredAccess       => GENERIC_READ or GENERIC_WRITE,
+                              dwShareMode           => FILE_SHARE_READ or FILE_SHARE_WRITE,
+                              lpSecurityAttributes  => null,
+                              dwCreationDisposition => OPEN_EXISTING,
+                              dwFlagsAndAttributes  => FILE_FLAG_NO_BUFFERING or FILE_FLAG_WRITE_THROUGH,
+                              hTemplateFile         => Null_Address);
       if Self.H_FS = INVALID_HANDLE_VALUE then
          Message_Box(Base_Window_Type(Main_Window.Get_X_Main.all),
                      "Error!","Open : CreateFile error!",
@@ -647,7 +647,7 @@ package body Clear_Drive_Device is
       use System,GWindows.Base,GWindows.Message_Boxes;
       use type Interfaces.C.unsigned_long;
 
-      Command_Line_C : Interfaces.C.char_array := Interfaces.C.To_C
+      Command_Line_C : Interfaces.C.wchar_array := Interfaces.C.To_C
         ("cmd /k format " & Self.Letter & ": /fs:" & Self.File_System & " /q /force");
 
       function To_LPSTR is new Ada.Unchecked_Conversion (System.Address, LPSTR);
@@ -658,24 +658,25 @@ package body Clear_Drive_Device is
          bInheritHandle       => Win32.TRUE);
 
       -- Init startup info
-      SI : aliased STARTUPINFO := STARTUPINFOA'(cb              => STARTUPINFOA'Size / 8, -- bytes
-                                                lpReserved      => null,
-                                                lpDesktop       => null,
-                                                lpTitle         => null,
-                                                dwX             => 0,
-                                                dwY             => 0,
-                                                dwXSize         => 0,
-                                                dwYSize         => 0,
-                                                dwXCountChars   => 0,
-                                                dwYCountChars   => 0,
-                                                dwFillAttribute => 0,
-                                                dwFlags         => STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES,
-                                                wShowWindow     => SW_HIDE,
-                                                cbReserved2     => 0,
-                                                lpReserved2     => null,
-                                                hStdInput       => Null_Address,
-                                                hStdOutput      => Null_Address,
-                                                hStdError       => Null_Address);
+      SI : aliased STARTUPINFOW := STARTUPINFOW'(cb              => STARTUPINFOW'Size / 8, -- bytes
+                                                 lpReserved      => null,
+                                                 lpDesktop       => null,
+                                                 lpTitle         => null,
+                                                 dwX             => 0,
+                                                 dwY             => 0,
+                                                 dwXSize         => 0,
+                                                 dwYSize         => 0,
+                                                 dwXCountChars   => 0,
+                                                 dwYCountChars   => 0,
+                                                 dwFillAttribute => 0,
+                                                 dwFlags         =>
+                                                   STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES,
+                                                 wShowWindow     => SW_HIDE,
+                                                 cbReserved2     => 0,
+                                                 lpReserved2     => null,
+                                                 hStdInput       => Null_Address,
+                                                 hStdOutput      => Null_Address,
+                                                 hStdError       => Null_Address);
 
       PI : aliased PROCESS_INFORMATION := PROCESS_INFORMATION'(hProcess    => Null_Address,
                                                                hThread     => Null_Address,
@@ -714,16 +715,16 @@ package body Clear_Drive_Device is
       SI.hStdError  := GetStdHandle(STD_ERROR_HANDLE);
 
       -- Start process
-      if CreateProcess(lpApplicationName    => null,
-                       lpCommandLine        => To_LPSTR(Command_Line_C'Address),
-                       lpProcessAttributes  => null,
-                       lpThreadAttributes   => null,
-                       bInheritHandles      => Win32.TRUE,
-                       dwCreationFlags      => CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS,
-                       lpEnvironment        => Null_Address,
-                       lpCurrentDirectory   => null,
-                       lpStartupInfo        => SI'Unchecked_Access,
-                       lpProcessInformation => PI'Unchecked_Access) /= Win32.TRUE then
+      if CreateProcessW(lpApplicationName    => null,
+                        lpCommandLine        => To_PWSTR(Command_Line_C'Address),
+                        lpProcessAttributes  => null,
+                        lpThreadAttributes   => null,
+                        bInheritHandles      => Win32.TRUE,
+                        dwCreationFlags      => CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS,
+                        lpEnvironment        => Null_Address,
+                        lpCurrentDirectory   => null,
+                        lpStartupInfo        => SI'Unchecked_Access,
+                        lpProcessInformation => PI'Unchecked_Access) /= Win32.TRUE then
          Message_Box(Base_Window_Type(Main_Window.Get_X_Main.all),
                      "Error!","Format_Drive : CreateProcess error!",
                      Icon     => Error_Icon);

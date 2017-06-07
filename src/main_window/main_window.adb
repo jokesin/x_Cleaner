@@ -53,6 +53,10 @@ with Drive_Devices;
 ---
 with Progress_Bars;
 
+
+-- use --
+use GWindows;
+
 package body Main_Window is
 
    package IC renames Interfaces.C;
@@ -395,15 +399,15 @@ package body Main_Window is
       -- Add_Row --
 
       procedure Add_Row(Control        : in out X_List_View_Type;
-                        Letter         : Character;
-                        Size           : String;
-                        Algorithm      : String := "";
-                        Operation      : String := "";
+                        Letter         : GCharacter;
+                        Size           : GString;
+                        Algorithm      : GString := "";
+                        Operation      : GString := "";
                         Clean_Progress : Integer := 0)
       is
          use type IC.unsigned;
       begin
-         Control.Insert_Item(LVIF_TEXT or LVIF_PARAM,String'(1=>Letter),GWindows.Types.Lparam(Clean_Progress),0);
+         Control.Insert_Item(LVIF_TEXT or LVIF_PARAM,GString'(1=>Letter),GWindows.Types.Lparam(Clean_Progress),0);
          Control.Set_Sub_Item(Size,0,1);
          Control.Set_Sub_Item(Algorithm,0,2);
          Control.Set_Sub_Item(Operation,0,3);
@@ -425,7 +429,7 @@ package body Main_Window is
             for K in reverse 0..L loop
                Control.Add_Row(Letter         => Sys_Drives.Element(K).Get_Letter,
                                Size           =>
-                                 ULONGLONG'Image(Sys_Drives.Element(K).Get_Size / (1024 * 1024)));
+                                 ULONGLONG'Wide_Image(Sys_Drives.Element(K).Get_Size / (1024 * 1024)));
             end loop;
          end if;
 
@@ -434,7 +438,7 @@ package body Main_Window is
       -- Set_Operation_Name --
       procedure Set_Algorithm_Name(Control        : in out X_List_View_Type;
                                    Item           : Natural;
-                                   Algorithm_Name : String)
+                                   Algorithm_Name : GString)
       is
       begin
          Control.Set_Sub_Item(Algorithm_Name,Item,2);
@@ -443,7 +447,7 @@ package body Main_Window is
       -- Set_Operation_Name --
       procedure Set_Operation_Name(Control        : in out X_List_View_Type;
                                    Item           : Natural;
-                                   Operation_Name : String)
+                                   Operation_Name : GString)
       is
       begin
          Control.Set_Sub_Item(Operation_Name,Item,3);

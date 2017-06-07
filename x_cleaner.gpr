@@ -1,4 +1,4 @@
-with "win32ada", "C:\GWindows\gwindows\gwindows";
+with "win32ada", "..\..\Tools\gwindows\gwindows";
 
 project X_Cleaner is
 
@@ -25,15 +25,15 @@ project X_Cleaner is
    end Ide;
 
    package Builder is
-      for Executable ("main.adb") use "_Cleaner";
 
       case Win32Ada_Build is
 
          when "default" =>
+            for Executable ("main.adb") use "XCleaner";
             for Default_Switches ("ada") use ("-j2");
 
          when "relocatable" =>
-
+            for Executable ("main.adb") use "_Cleaner";
       end case;
    end Builder;
 
@@ -54,14 +54,6 @@ project X_Cleaner is
    end Compiler;
 
    package Linker is
-
-      case Win32Ada_Build is
-
-         when "default" =>
-
-         when "relocatable" =>
-
-      end case;
    end Linker;
 
    package Naming is

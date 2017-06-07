@@ -17,16 +17,18 @@
 --        along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------------
 
+with GWindows; use GWindows;
+
 separate (Drive_Devices.Drive_Device)
 
 
-function Init(Letter : Character; The_Drive : out Drive) return Boolean
+function Init(Letter : GCharacter; The_Drive : out Drive) return Boolean
 is
    use System,IC;
-   Drive_Name:String:= Letter & ":\" & ASCII.NUL; -- open File System to get partition size
-   Volume_Name_C:IC.char_array(1..MAX_PATH+1);
+   Drive_Name: GString:= Letter & ":\" & GCharacter'Val (0); -- open File System to get partition size
+   Volume_Name_C:IC.wchar_array(1..MAX_PATH+1);
 
-   File_System_Name_C:IC.char_array(1..MAX_PATH+1);
+   File_System_Name_C:IC.wchar_array(1..MAX_PATH+1);
    function To_LPSTR is
      new Ada.Unchecked_Conversion(Address, LPSTR);
    function To_LPCSTR is
@@ -36,14 +38,14 @@ is
    Volume_Info : Volume_Information;
 
 begin
-   if GetVolumeInformation
-     (lpRootPathName           => To_LPCSTR(Drive_Name'Address),
-      lpVolumeNameBuffer       => To_LPSTR(Volume_Name_C'Address),
+   if GetVolumeInformationW
+     (lpRootPathName           => To_PCWSTR(Drive_Name'Address),
+      lpVolumeNameBuffer       => To_PWSTR(Volume_Name_C'Address),
       nVolumeNameSize          => MAX_PATH+1,
       lpVolumeSerialNumber     => null,
       lpMaximumComponentLength => null,
       lpFileSystemFlags        => null,
-      lpFileSystemNameBuffer   => To_LPSTR(File_System_Name_C'Address),
+      lpFileSystemNameBuffer   => To_PWSTR(File_System_Name_C'Address),
       nFileSystemNameSize      => MAX_PATH+1) = Win32.TRUE
      and then
        Get_Volume_Information(Drive_Letter => Letter,
@@ -59,8 +61,8 @@ begin
            new Ada.Unchecked_Conversion(Address, Unsigned_32);
 
          Drive_Size:ULONGLONG:=0;
-         Volume_Name:String:=To_Ada(Volume_Name_C);
-         File_System_Name : String := To_Ada(File_System_Name_C);
+         Volume_Name:GString:=To_Ada(Volume_Name_C);
+         File_System_Name : GString := To_Ada(File_System_Name_C);
       begin
 
          --Asm("int $3");

@@ -51,6 +51,9 @@ with GWindows,
 ---
 with System.Machine_Code; use System.Machine_Code;
 
+-- use --
+use GWindows;
+
 package body Drive_Devices is
 
    package IC renames Interfaces.C;
@@ -103,9 +106,9 @@ package body Drive_Devices is
 
       use type IC.unsigned_long;
 
-      Ret_Drive  : Drive_Device.Drive := null;
-      Drive_Letter:Character := 'A';
-      Drive_Mask:DWORD       := GetLogicalDrives;
+      Ret_Drive    : Drive_Device.Drive := null;
+      Drive_Letter : GCharacter := 'A';
+      Drive_Mask   : DWORD       := GetLogicalDrives;
    begin
       while Drive_Mask /= 0 loop
          if (Drive_Mask and 1) = 1 and then
@@ -113,7 +116,7 @@ package body Drive_Devices is
             Sys_Drives.Append(Ret_Drive.all);
          end if;
 
-         Drive_Letter:=Character'Succ(Drive_Letter);
+         Drive_Letter:=GCharacter'Succ(Drive_Letter);
 
          Drive_Mask:=Interfaces.C.unsigned_long
            (Interfaces.Shift_Right(Interfaces.Unsigned_32(Drive_Mask),1));
@@ -122,9 +125,10 @@ package body Drive_Devices is
 
    exception
       when Init_Drive_Error =>
-         Message_Box(Base_Window_Type(Main_Window.Get_X_Main.all),
-                     "Error!","Error during drives initialization with drive " & Drive_Letter,
-                     Icon     => Error_Icon);
+         Message_Box(Title => GWindows.GString'("Error!"),
+                     Text  => GWindows.GString'("Error during drives initialization with drive " &
+                         Drive_Letter),
+                     Icon  => Error_Icon);
 
          raise Init_Drive_Error;
    end Init;

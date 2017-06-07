@@ -67,7 +67,6 @@ package body Callbacks is
          when IDM_About=>
             Show_About_Dialog;
 
-
          when IDM_HMG_IS5 =>
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
             if Selected_Drive >= 0 then
@@ -136,11 +135,11 @@ package body Callbacks is
       OK_Button : Default_Button_Type;
       Font      : Font_Type;
    begin
-      Create_As_Dialog(Dialog,"About x_Cleaner & license",Width => 400,Height => 280);
+      Create_As_Dialog(Dialog,"About XCleaner & license",Width => 400,Height => 280);
       Font.Create_Stock_Font(Default_GUI);
       List_Box.Create(Dialog,10,10,380,230,Sort => False,Is_Dynamic => True);
       List_Box.Set_Font(Font);
-      List_Box.Add("x_Cleaner clears selected volume with special algorithm");
+      List_Box.Add("XCleaner (v 1.2.3) clears selected volume with special algorithm");
       List_Box.Add("");
       List_Box.Add("Copyright (C) 2016  George Ivanov");
       List_Box.Add("");

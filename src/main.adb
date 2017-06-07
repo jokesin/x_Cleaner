@@ -90,7 +90,7 @@ is
    function HICON_To_LONG is new Ada.Unchecked_Conversion(HICON,LONG);
    Ret_Val : LONG;
 begin
-   X_Main.Create("x_Cleaner v 1.2.3");
+   X_Main.Create("XCleaner");
    Ret_Val := LONG(SetClassLong(HWND(X_Main.Handle),GCL_HICON,HICON_To_LONG(X_Icon)));
    X_Main.Size(600,300);
    X_Main.Visible(True);
@@ -111,7 +111,7 @@ begin
 
 
    --TODO :
-   -- change On_Context_Menu_Handler to X_List
+   -- try to change On_Context_Menu_Handler to X_List
    X_Main.On_Context_Menu_Handler(Main_Window.List_View.Popup_Menu.Do_Context_Menu'Access);
    --
    Drive_Devices.Init;
