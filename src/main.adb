@@ -109,14 +109,12 @@ begin
    X_List.Insert_Column("Pass / Operation",3,170);
    X_List.Insert_Column("Cleaning process",4,162);
 
-
    --TODO :
    -- try to change On_Context_Menu_Handler to X_List
    X_Main.On_Context_Menu_Handler(Main_Window.Popup_Menu.Do_Context_Menu'Access);
    --
    Drive_Devices.Init;
    X_List.Add_Drives;
-   --
 
    -- Setup menu
    X_Main_Menu := Create_Menu;
