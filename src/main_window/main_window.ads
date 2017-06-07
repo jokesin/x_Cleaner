@@ -28,16 +28,16 @@ with Interfaces.C;
 ---
 package Main_Window is
 
-   package List_View is
+   -- Popup --
+   package Popup_Menu is
+      procedure Do_Context_Menu(Window : in out GWindows.Base.Base_Window_Type'Class;
+                                X      : in     Integer;
+                                Y      : in     Integer);
+      --           overriding
+      --           procedure On_Show(Window : in out GWindows.Base.Base_Window_Type'Class);
+   end Popup_Menu;
 
-      -- Popup --
-      package Popup_Menu is
-         procedure Do_Context_Menu(Window : in out GWindows.Base.Base_Window_Type'Class;
-                                   X      : in     Integer;
-                                   Y      : in     Integer);
-         --           overriding
-         --           procedure On_Show(Window : in out GWindows.Base.Base_Window_Type'Class);
-      end Popup_Menu;
+   package List_View is
 
       -- ListView
 

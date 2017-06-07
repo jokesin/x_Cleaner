@@ -62,69 +62,68 @@ package body Main_Window is
    package IC renames Interfaces.C;
    package PB renames Progress_Bars;
 
-   use Main_Window.List_View;
+ use Main_Window.List_View;
+ use Callbacks;
+   -- Popup --
+   package body Popup_Menu is
+ use GWindows.Menus;
+
+      Clear_Menu : Menu_Type;
+      Clear_Sub_Menu : Menu_Type;
+
+      procedure Do_Context_Menu(Window : in out GWindows.Base.Base_Window_Type'Class;
+                                X      : in     Integer;
+                                Y      : in     Integer)
+      is
+ use GWindows.Types,
+             Drive_Devices;
+
+         Sys_Drives : Drives_Ptr := Get_Drives;
+         Item,SubItem : Integer := 0;
+         Cursor_Pos : aliased POINT := POINT'(LONG(X),LONG(Y));
+      begin
+         if ScreenToClient(HWND(X_Main_Window_Type(Window).Volume_List.Handle),Cursor_Pos'Unchecked_Access) /=
+           Win32.TRUE then
+            null;
+         end if;
+         X_Main_Window_Type(Window).Volume_List.Item_At_Position(Point_Type'(Integer(Cursor_Pos.X),
+                                                                 Integer(Cursor_Pos.Y)),Item,SubItem);
+         X_Main_Window_Type(Window).Volume_List.Set_Selected_Index(Item);
+         declare
+            Sys_Drive : Drive_Device.Drive_Record := Sys_Drives.Element(Item);
+         begin
+            if not Sys_Drive.Is_Cleaning then
+               State(Clear_Menu,Command,IDM_CANCEL,Disabled);
+               State(Clear_Menu,Position,1,Enabled);
+            else
+               State(Clear_Menu,Command,IDM_CANCEL,Enabled);
+               State(Clear_Menu,Position,1,Disabled);
+            end if;
+         end;
+
+         Display_Context_Menu(X_Main_Window_Type(Window),Clear_Menu,0,X,Y);
+      end Do_Context_Menu;
+
+   begin
+      Clear_Menu := Create_Popup;
+      Clear_Sub_Menu := Create_Popup;
+
+      Append_Item(Clear_Sub_Menu,"B&ritish HMG-IS5 (Base) [1 pass]",IDM_HMG_IS5);
+      Append_Item(Clear_Sub_Menu,"B&ritish HMG-IS5 (Enhanced) [3 passes]",IDM_HMG_IS5_ENH);
+      Append_Item(Clear_Sub_Menu,"R&ussian GOST-R-50739-95 [2 passes]",IDM_GOST_R50739_95);
+      Append_Item(Clear_Sub_Menu,"U&S DoD 5220.22-M(E) [3 passes]",IDM_DoD5220_22_M_E);
+      Append_Item(Clear_Sub_Menu,"B&ruce Schneier's Algorithm [7 passes]",IDM_SCHNEIER);
+
+      Append_Menu(Clear_Menu,"&Clear drive",Clear_Sub_Menu);
+
+      Append_Item(Clear_Menu,"&Cancel",IDM_CANCEL);
+
+   end Popup_Menu;
+
+   -- ListView --
 
    package body List_View is
-      use Callbacks;
-      -- Popup --
 
-      package body Popup_Menu is
-         use GWindows.Menus;
-
-         Clear_Menu : Menu_Type;
-         Clear_Sub_Menu : Menu_Type;
-
-         procedure Do_Context_Menu(Window : in out GWindows.Base.Base_Window_Type'Class;
-                                   X      : in     Integer;
-                                   Y      : in     Integer)
-         is
-            use GWindows.Types,
-                Drive_Devices;
-
-            Sys_Drives : Drives_Ptr := Get_Drives;
-            Item,SubItem : Integer := 0;
-            Cursor_Pos : aliased POINT := POINT'(LONG(X),LONG(Y));
-         begin
-            if ScreenToClient(HWND(X_Main_Window_Type(Window).Volume_List.Handle),Cursor_Pos'Unchecked_Access) /=
-              Win32.TRUE then
-               null;
-            end if;
-            X_Main_Window_Type(Window).Volume_List.Item_At_Position(Point_Type'(Integer(Cursor_Pos.X),
-                                                                    Integer(Cursor_Pos.Y)),Item,SubItem);
-            --Drive_Devices.Get_Drives.Set_Selected_Index(Item);
-            X_Main_Window_Type(Window).Volume_List.Selected_Index := Item;
-            declare
-               Sys_Drive : Drive_Device.Drive_Record := Sys_Drives.Element(Item);
-            begin
-               if not Sys_Drive.Is_Cleaning then
-                  State(Clear_Menu,Command,IDM_CANCEL,Disabled);
-                  State(Clear_Menu,Position,1,Enabled);
-               else
-                  State(Clear_Menu,Command,IDM_CANCEL,Enabled);
-                  State(Clear_Menu,Position,1,Disabled);
-               end if;
-            end;
-
-            Display_Context_Menu(X_Main_Window_Type(Window),Clear_Menu,0,X,Y);
-         end Do_Context_Menu;
-
-      begin
-         Clear_Menu := Create_Popup;
-         Clear_Sub_Menu := Create_Popup;
-
-         Append_Item(Clear_Sub_Menu,"B&ritish HMG-IS5 (Base) [1 pass]",IDM_HMG_IS5);
-         Append_Item(Clear_Sub_Menu,"B&ritish HMG-IS5 (Enhanced) [3 passes]",IDM_HMG_IS5_ENH);
-         Append_Item(Clear_Sub_Menu,"R&ussian GOST-R-50739-95 [2 passes]",IDM_GOST_R50739_95);
-         Append_Item(Clear_Sub_Menu,"U&S DoD 5220.22-M(E) [3 passes]",IDM_DoD5220_22_M_E);
-         Append_Item(Clear_Sub_Menu,"B&ruce Schneier's Algorithm [7 passes]",IDM_SCHNEIER);
-
-         Append_Menu(Clear_Menu,"&Clear drive",Clear_Sub_Menu);
-
-         Append_Item(Clear_Menu,"&Cancel",IDM_CANCEL);
-
-      end Popup_Menu;
-
-      -- ListView --
 
       type LVITEM is
          record

@@ -112,7 +112,7 @@ begin
 
    --TODO :
    -- try to change On_Context_Menu_Handler to X_List
-   X_Main.On_Context_Menu_Handler(Main_Window.List_View.Popup_Menu.Do_Context_Menu'Access);
+   X_Main.On_Context_Menu_Handler(Main_Window.Popup_Menu.Do_Context_Menu'Access);
    --
    Drive_Devices.Init;
    X_List.Add_Drives;
