@@ -145,6 +145,7 @@ package Drive_Devices is
          procedure Clear(Self            : access Clear_Drive_Record;
                          Clear_Algorithm : Algorithm);
 
+         --TODO maybe not new element but update current (??)
          function Init(Drive       : Drive_Record;
                        Buf_Size    : Win32.ULONG;
                        Drive_Index : Natural)
