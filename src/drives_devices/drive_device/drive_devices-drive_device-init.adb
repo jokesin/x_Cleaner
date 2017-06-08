@@ -21,7 +21,6 @@ with GWindows; use GWindows;
 
 separate (Drive_Devices.Drive_Device)
 
-
 function Init(Letter : GCharacter; The_Drive : out Drive) return Boolean
 is
    use System,IC;

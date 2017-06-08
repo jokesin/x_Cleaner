@@ -21,7 +21,6 @@ separate (Drive_Devices.Drive_Device)
 
 package body Clear_Drive_Device is
 
-
    use Ada.Numerics,
        Ada.Numerics.Float_Random,
        Ada.Numerics.Elementary_Functions;

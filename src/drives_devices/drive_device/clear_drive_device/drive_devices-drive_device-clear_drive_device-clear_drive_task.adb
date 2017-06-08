@@ -19,7 +19,6 @@
 
 separate (Drive_Devices.Drive_Device.Clear_Drive_Device)
 
-
 task body Clear_Drive_Task
 is
    use GWindows.Base,

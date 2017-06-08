@@ -137,7 +137,7 @@ package body Callbacks is
    begin
       Create_As_Dialog(Dialog,"About XCleaner & license",Width => 400,Height => 280);
       Font.Create_Stock_Font(Default_GUI);
-      List_Box.Create(Dialog,10,10,380,230,Sort => False,Is_Dynamic => True);
+      List_Box.Create(Dialog,10,10,380,230,Sort => False,Is_Dynamic => False);
       List_Box.Set_Font(Font);
       List_Box.Add("XCleaner (v 1.2.3) clears selected volume with special algorithm");
       List_Box.Add("");

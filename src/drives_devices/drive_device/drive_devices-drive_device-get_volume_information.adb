@@ -21,7 +21,6 @@ with Win32; use Win32;
 
 separate (Drive_Devices.Drive_Device)
 
-
 function Get_Volume_Information(Drive_Letter : GCharacter;
                                 Volume_Info  : in out Volume_Information)
                                 return Win32.BOOL

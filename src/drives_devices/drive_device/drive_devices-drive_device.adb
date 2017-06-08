@@ -20,9 +20,7 @@ with GWindows; use GWindows;
 
 separate (Drive_Devices)
 
-
 package body Drive_Device is
-
 
    -- inner function --
    -- Get_Drive_Geometry --
