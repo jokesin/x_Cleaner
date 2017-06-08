@@ -43,11 +43,17 @@ is
       Drv_List.Set_Operation_Name(Data.Drive_Index,"Writing 0x0...");
 
       while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
+         exit
+           when Data.Is_Canceled;
          Data.HMG_IS5_Clear_Main(Drv_List);
          Data.Buf_Index:=Data.Buf_Index+1;
       end loop;
       -- Clean rest bytes
-      Data.HMG_IS5_Clear_Rest(Drv_List);
+      if not Data.Is_Canceled then
+         Data.HMG_IS5_Clear_Rest(Drv_List);
+         Data.Is_Canceled := False;
+      end if;
+
    end HMG_IS5_Proc;
 
    -- HMG_IS5_Enh_Proc --

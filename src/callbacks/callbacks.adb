@@ -64,8 +64,14 @@ package body Callbacks is
          when IDM_Exit =>
             GWindows.Application.End_Application;
 
-         when IDM_About=>
+         when IDM_About =>
             Show_About_Dialog;
+
+         when IDM_CANCEL =>
+            Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
+            if Selected_Drive >= 0 then
+               Sys_Drives.Set_Cancel_State(Selected_Drive,True);
+            end if;
 
          when IDM_HMG_IS5 =>
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;

@@ -60,9 +60,14 @@ package Drive_Devices is
 
       procedure Set_Cleaning_State(Drive : in out Drive_Record;
                                    State : Boolean);
+
+      function Is_Canceled(Drive : Drive_Record)
+                           return Boolean;
+
+      procedure Set_Cancel_State(Drive : in out Drive_Record;
+                                 State : Boolean);
+
       private
-
-
 
       type Drive_Record(Label_Length:Natural;FS_Length:Natural) is tagged
          record
@@ -72,6 +77,7 @@ package Drive_Devices is
             M_Type      : Win32.Winioctl.MEDIA_TYPE;
             Size        : Win32.ULONGLONG;
             Is_Cleaning : Boolean;
+            Is_Canceled : Boolean;
          end record;
 
       ---------------------------------------
@@ -170,6 +176,9 @@ package Drive_Devices is
    procedure Set_Cleaning_State(Drives : access Drives_Vector;
                                 Index  : Integer;
                                 State  : Boolean);
+   procedure Set_Cancel_State(Drives : access Drives_Vector;
+                              Index  : Integer;
+                              State  : Boolean);
 
    --type Drives_Record is tagged private;
    --type Drives is access all Drives_Vector;--Drives_Record;

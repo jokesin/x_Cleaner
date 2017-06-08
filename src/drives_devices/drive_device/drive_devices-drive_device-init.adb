@@ -81,7 +81,8 @@ begin
                                       File_System  => File_System_Name,
                                       M_Type       => Volume_Info.Geometry.MediaType,
                                       Size         => Drive_Size,
-                                      Is_Cleaning  => False);
+                                      Is_Cleaning  => False,
+                                      Is_Canceled  => False);
          return True;
       end;
    else

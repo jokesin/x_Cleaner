@@ -143,15 +143,30 @@ package body Drive_Devices is
    is
       use Drive_Device;
 
-      procedure Set_C_State(E : in out Drive_Record) is
+      procedure Set_Cl_State(E : in out Drive_Record) is
       begin
          E.Set_Cleaning_State(State);
-      end Set_C_State;
-
-      --D_Vector : Drives_Vector := ;
+      end Set_Cl_State;
+      ---
    begin
-      Drives.Update_Element(Index, Set_C_State'Access);
+      Drives.Update_Element(Index, Set_Cl_State'Access);
    end Set_Cleaning_State;
 
 
+   ---
+   -- Set_Cancel_State
+   ---
+   procedure Set_Cancel_State(Drives : access Drives_Vector;
+                              Index  : Integer;
+                              State  : Boolean)
+   is
+      use Drive_Device;
+      procedure Set_Cn_State(E : in out Drive_Record) is
+      begin
+         E.Set_Cancel_State(State);
+      end Set_Cn_State;
+      ---
+   begin
+      Drives.Update_Element(Index, Set_Cn_State'Access);
+   end Set_Cancel_State;
 end Drive_Devices;

@@ -136,16 +136,27 @@ package body Drive_Device is
       return Drive.Is_Cleaning;
    end Is_Cleaning;
 
-   ----------------------------------
-   -------- PRIVATE SECTION ---------
-   ----------------------------------
-
    procedure Set_Cleaning_State(Drive : in out Drive_Record;
                                 State : Boolean)
    is
    begin
       Drive.Is_Cleaning := State;
    end Set_Cleaning_State;
+
+   -- Is_Canceled --
+   function Is_Canceled(Drive : Drive_Record)
+                        return Boolean is
+   begin
+      return Drive.Is_Canceled;
+   end Is_Canceled;
+
+   -- Set_Cancel_State
+   procedure Set_Cancel_State(Drive : in out Drive_Record;
+                              State : Boolean) is
+   begin
+      Drive.Is_Canceled := State;
+   end Set_Cancel_State;
+
 
    package body Clear_Drive_Device is separate;
 
