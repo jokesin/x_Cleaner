@@ -180,6 +180,10 @@ package Drive_Devices is
    procedure Set_Cancel_State(Drives : access Drives_Vector;
                               Index  : Integer;
                               State  : Boolean);
+   function Is_Canceled(Drives : access Drives_Vector;
+                        Index  : Integer)
+                        return Boolean;
+
 
    --type Drives_Record is tagged private;
    --type Drives is access all Drives_Vector;--Drives_Record;

@@ -17,6 +17,8 @@
 --        along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------------
 
+with GWindows.GStrings; use GWindows.GStrings;
+
 separate (Drive_Devices.Drive_Device.Clear_Drive_Device)
 
 task body Clear_Drive_Task
@@ -24,6 +26,7 @@ is
    use GWindows.Base,
        GWindows.Message_Boxes;
 
+   Drives : Drives_Ptr := Get_Drives;
    Data : Clear_Drive;
    --Delay_Time : Duration;-- make dynamic
    Clear_Algorithm : Algorithm;
@@ -44,12 +47,12 @@ is
 
       while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
          exit
-           when Data.Is_Canceled;
+           when Drives.Is_Canceled(Data.Drive_Index);
          Data.HMG_IS5_Clear_Main(Drv_List);
          Data.Buf_Index:=Data.Buf_Index+1;
       end loop;
       -- Clean rest bytes
-      if not Data.Is_Canceled then
+      if not Drives.Is_Canceled(Data.Drive_Index) then
          Data.HMG_IS5_Clear_Rest(Drv_List);
          Data.Is_Canceled := False;
       end if;
@@ -228,8 +231,19 @@ begin -- for Clear_Drive_Task
                                      Operation_Name => "Formatting...");
          Data.Format;
 
-         Drv_List.Set_Operation_Name(Item           => Data.Drive_Index,
-                                     Operation_Name => "Done.");
+         Display_Result_Operation:
+         declare
+            Result_Operation_Name : GString_Unbounded;
+         begin
+            if Drives.Is_Canceled(Data.Drive_Index) then
+               Result_Operation_Name := To_GString_Unbounded("Canceled");
+            else
+               Result_Operation_Name := To_GString_Unbounded("Done");
+            end if;
+            Drv_List.Set_Operation_Name(Item           => Data.Drive_Index,
+                                        Operation_Name => To_GString_From_Unbounded(Result_Operation_Name));
+         end Display_Result_Operation;
+
       else
          Message_Box(Base_Window_Type(Main_Window.Get_X_Main.all),
                      "Error!","Error while unblock and free drive's descriptor!",

@@ -169,4 +169,15 @@ package body Drive_Devices is
    begin
       Drives.Update_Element(Index, Set_Cn_State'Access);
    end Set_Cancel_State;
+
+   ---
+   -- Is_Canceled
+   ---
+   function Is_Canceled(Drives : access Drives_Vector;
+                        Index  : Integer)
+                        return Boolean is
+   begin
+      return Drives.Element(Index).Is_Canceled;
+   end Is_Canceled;
+
 end Drive_Devices;
