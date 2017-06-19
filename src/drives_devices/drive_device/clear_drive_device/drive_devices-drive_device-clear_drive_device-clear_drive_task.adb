@@ -32,10 +32,38 @@ is
    Clear_Algorithm : Algorithm;
    Drv_List : Main_Window.List_View.X_List_View:=Main_Window.Get_X_Main.Get_Volume_List;
 
+   -- Common generic clear proc
+
+   generic
+      with procedure Clear_With_Algorithm_Main(Self        : not null access Clear_Drive_Record;
+                                               Drives_List : Main_Window.List_View.X_List_View);
+      with procedure Clear_With_Algorithm_Rest(Self        : not null access Clear_Drive_Record;
+                                               Drives_List : Main_Window.List_View.X_List_View);
+   procedure Generic_Clear_Data;
+
+   procedure Generic_Clear_Data is
+   begin
+      -- Clean main part
+      while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
+         exit
+           when Drives.Get_Drive(Data.Drive_Index).Is_Canceled;
+         Clear_With_Algorithm_Main(Data,Drv_List);
+         Data.Buf_Index:=Data.Buf_Index+1;
+      end loop;
+      -- Clean rest bytes
+      if not Drives.Get_Drive(Data.Drive_Index).Is_Canceled then
+         Clear_With_Algorithm_Rest(Data,Drv_List);
+      end if;
+
+   end Generic_Clear_Data;
+
    -- HMG_IS5_Proc --
 
    procedure HMG_IS5_Proc with Inline
    is
+      procedure Clear_Data is new Generic_Clear_Data
+        (Clear_With_Algorithm_Main => HMG_IS5_Clear_Main,
+         Clear_With_Algorithm_Rest => HMG_IS5_Clear_Rest);
    begin
       -- Set algorithm name
       Drv_List.Set_Algorithm_Name(Data.Drive_Index,"HMG IS5 (Base)");
@@ -45,17 +73,7 @@ is
       -- Clean drive
       Drv_List.Set_Operation_Name(Data.Drive_Index,"Writing 0x0...");
 
-      while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
-         exit
-           when Drives.Is_Canceled(Data.Drive_Index);
-         Data.HMG_IS5_Clear_Main(Drv_List);
-         Data.Buf_Index:=Data.Buf_Index+1;
-      end loop;
-      -- Clean rest bytes
-      if not Drives.Is_Canceled(Data.Drive_Index) then
-         Data.HMG_IS5_Clear_Rest(Drv_List);
-         Data.Is_Canceled := False;
-      end if;
+      Clear_Data;
 
    end HMG_IS5_Proc;
 
@@ -63,6 +81,9 @@ is
 
    procedure HMG_IS5_Enh_Proc with Inline
    is
+      procedure Clear_Data is new Generic_Clear_Data
+        (Clear_With_Algorithm_Main => HMG_IS5_Enh_Clear_Main,
+         Clear_With_Algorithm_Rest => HMG_IS5_Enh_Clear_Rest);
    begin
       -- Set algorithm name
       Drv_List.Set_Algorithm_Name(Data.Drive_Index,"HMG IS5 (Enhanced)");
@@ -84,19 +105,22 @@ is
                                              " : Writing random values...");
          end case;
 
-         while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
-            Data.HMG_IS5_Enh_Clear_Main(Drv_List);
-            Data.Buf_Index:=Data.Buf_Index+1;
-         end loop;
-         -- Clean rest bytes
-         Data.HMG_IS5_Enh_Clear_Rest(Drv_List);
+         Clear_Data;
+
+         exit
+           when Drives.Get_Drive(Data.Drive_Index).Is_Canceled;
+
       end loop;
+
    end HMG_IS5_Enh_Proc;
 
    -- GOST_R50739_95_Proc --
 
    procedure GOST_R50739_95_Proc with Inline
    is
+      procedure Clear_Data is new Generic_Clear_Data
+        (Clear_With_Algorithm_Main => GOST_R50739_95_Clear_Main,
+         Clear_With_Algorithm_Rest => GOST_R50739_95_Clear_Rest);
    begin
       -- Set algorithm name
       Drv_List.Set_Algorithm_Name(Data.Drive_Index,"GOST-R-50739-95");
@@ -116,12 +140,11 @@ is
                Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing random values...");
          end case;
 
-         while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
-            Data.GOST_R50739_95_Clear_Main(Drv_List);
-            Data.Buf_Index:=Data.Buf_Index+1;
-         end loop;
-         -- Clean rest bytes
-         Data.GOST_R50739_95_Clear_Rest(Drv_List);
+         Clear_Data;
+
+         exit
+           when Drives.Get_Drive(Data.Drive_Index).Is_Canceled;
+
       end loop;
 
    end GOST_R50739_95_Proc;
@@ -130,6 +153,9 @@ is
 
    procedure DoD5220_22_M_E_Proc with Inline
    is
+      procedure Clear_Data is new Generic_Clear_Data
+        (Clear_With_Algorithm_Main => DoD5220_22_M_E_Clear_Main,
+         Clear_With_Algorithm_Rest => DoD5220_22_M_E_Clear_Rest);
    begin
       -- Set algorithm name
       Drv_List.Set_Algorithm_Name(Data.Drive_Index,"US DoD 5220.22-M(E)");
@@ -150,18 +176,20 @@ is
                Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing random values...");
          end case;
 
-         while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
-            Data.HMG_IS5_Enh_Clear_Main(Drv_List);
-            Data.Buf_Index:=Data.Buf_Index+1;
-         end loop;
-         -- Clean rest bytes
-         Data.HMG_IS5_Enh_Clear_Rest(Drv_List);
+         Clear_Data;
+
+         exit
+           when Drives.Get_Drive(Data.Drive_Index).Is_Canceled;
+
       end loop;
    end DoD5220_22_M_E_Proc;
 
    -- SCHNEIER_Proc --
    procedure SCHNEIER_Proc with Inline
    is
+      procedure Clear_Data is new Generic_Clear_Data
+        (Clear_With_Algorithm_Main => SCHNEIER_Clear_Main,
+         Clear_With_Algorithm_Rest => SCHNEIER_Clear_Rest);
    begin
       -- Set algorithm name
       Drv_List.Set_Algorithm_Name(Data.Drive_Index,"Bruce Schneier");
@@ -183,12 +211,11 @@ is
                Drv_List.Set_Operation_Name(Data.Drive_Index,Positive'Wide_Image(Pass) & " : Writing random values...");
          end case;
 
-         while ULONGLONG(Data.Buf_Index) < Data.Buf_Count loop
-            Data.SCHNEIER_Clear_Main(Drv_List);
-            Data.Buf_Index:=Data.Buf_Index+1;
-         end loop;
-         -- Clean rest bytes
-         Data.SCHNEIER_Clear_Rest(Drv_List);
+         Clear_Data;
+
+         exit
+           when Drives.Get_Drive(Data.Drive_Index).Is_Canceled;
+
       end loop;
    end SCHNEIER_Proc;
 
@@ -235,7 +262,7 @@ begin -- for Clear_Drive_Task
          declare
             Result_Operation_Name : GString_Unbounded;
          begin
-            if Drives.Is_Canceled(Data.Drive_Index) then
+            if Drives.Get_Drive(Data.Drive_Index).Is_Canceled then
                Result_Operation_Name := To_GString_Unbounded("Canceled");
             else
                Result_Operation_Name := To_GString_Unbounded("Done");
@@ -254,5 +281,8 @@ begin -- for Clear_Drive_Task
                   "Error!","Error while opening and block drive's descriptor!",
                   Icon     => Error_Icon);
    end if;
+
+   Data.Drive_Rec.Set_Cleaning_State(False);
+   Data.Drive_Rec.Set_Cancel_State(False);
 
 end Clear_Drive_Task;

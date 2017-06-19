@@ -315,6 +315,14 @@ package body Clear_Drive_Device is
       end case;
    end HMG_IS5_Enh_Clear_Rest;
 
+   -- DoD5220_22_M_E --
+
+   procedure DoD5220_22_M_E_Clear_Main(Self        : not null access Clear_Drive_Record;
+                                       Drives_List : Main_Window.List_View.X_List_View)
+                                       renames HMG_IS5_Enh_Clear_Main;
+   procedure DoD5220_22_M_E_Clear_Rest(Self        : not null access Clear_Drive_Record;
+                                       Drives_List : Main_Window.List_View.X_List_View)
+                                       renames HMG_IS5_Enh_Clear_Rest;
    -- GOST_R50739_95_Clear_Main --
 
    procedure GOST_R50739_95_Clear_Main(Self        : not null access Clear_Drive_Record;
@@ -516,13 +524,13 @@ package body Clear_Drive_Device is
 
    -- Init --
 
-   function Init(Drive       : Drive_Record;
+   function Init(Drive       : access Drive_Record;
                  Buf_Size    : Win32.ULONG;
                  Drive_Index : Natural)
                  return Clear_Drive
    is
       Ret_Clear_Drive : Clear_Drive := new Clear_Drive_Record'
-        (Drive with
+        (Drive_Rec    => Drive,
          Buf_Size     => Buf_Size,
          Buf_Count    => Drive.Size / Win32.ULONGLONG(Buf_Size),
          Buf_Rem_Size => Drive.Size rem Win32.ULONGLONG(Buf_Size),
@@ -549,7 +557,7 @@ package body Clear_Drive_Device is
       use type IC.unsigned_long;
       use System,GWindows.Base,GWindows.Message_Boxes;
 
-      Path_C : IC.wchar_array := IC.To_C("\\.\" & Self.Letter & ":");
+      Path_C : IC.wchar_array := IC.To_C("\\.\" & Self.Drive_Rec.Letter & ":");
    begin
       Self.H_FS:= CreateFileW(lpFileName            => To_PCWSTR(Path_C'Address),
                               dwDesiredAccess       => GENERIC_READ or GENERIC_WRITE,
@@ -647,7 +655,7 @@ package body Clear_Drive_Device is
       use type Interfaces.C.unsigned_long;
 
       Command_Line_C : Interfaces.C.wchar_array := Interfaces.C.To_C
-        ("cmd /k format " & Self.Letter & ": /fs:" & Self.File_System & " /q /force");
+        ("cmd /k format " & Self.Drive_Rec.Letter & ": /fs:" & Self.Drive_Rec.File_System & " /q /force");
 
       function To_LPSTR is new Ada.Unchecked_Conversion (System.Address, LPSTR);
 

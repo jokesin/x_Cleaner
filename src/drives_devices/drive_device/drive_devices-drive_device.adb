@@ -39,7 +39,7 @@ package body Drive_Device is
 
    -- Clear --
 
-   procedure Clear(Drive            : Drive_Record;
+   procedure Clear(Drive            : access Drive_Record;
                    Drive_Index      : Natural;
                    Chosen_Algorithm : in Algorithm := HMG_IS5;
                    Buf_Size_Mb_Mult : Win32.ULONG := 1048576)
@@ -81,6 +81,7 @@ package body Drive_Device is
       Ret_Val := Show_Attention_Message_Dialog;
       case Ret_Val is
          when GWindows.Constants.IDOK =>
+            Drive.Set_Cleaning_State(True);
             declare
                Clr_Drv:Clear_Drive_Device.Clear_Drive := Clear_Drive_Device.Init(Drive,
                                                                                  Buf_Size_Mb_Mult * 1,
@@ -88,7 +89,9 @@ package body Drive_Device is
             begin
                Clr_Drv.Clear(Clear_Algorithm => Chosen_Algorithm);
             end;
-            when others =>
+         when GWindows.Constants.IDCANCEL =>
+            Drive.Set_Cleaning_State(False);
+         when others =>
             null;
       end case;
 
@@ -131,12 +134,12 @@ package body Drive_Device is
 
 
    -- Is_Cleaning
-   function Is_Cleaning(Drive : Drive_Record) return Boolean is
+   function Is_Cleaning(Drive : access Drive_Record) return Boolean is
    begin
       return Drive.Is_Cleaning;
    end Is_Cleaning;
 
-   procedure Set_Cleaning_State(Drive : in out Drive_Record;
+   procedure Set_Cleaning_State(Drive : access Drive_Record;
                                 State : Boolean)
    is
    begin
@@ -144,14 +147,14 @@ package body Drive_Device is
    end Set_Cleaning_State;
 
    -- Is_Canceled --
-   function Is_Canceled(Drive : Drive_Record)
+   function Is_Canceled(Drive : access Drive_Record)
                         return Boolean is
    begin
       return Drive.Is_Canceled;
    end Is_Canceled;
 
    -- Set_Cancel_State
-   procedure Set_Cancel_State(Drive : in out Drive_Record;
+   procedure Set_Cancel_State(Drive : access Drive_Record;
                               State : Boolean) is
    begin
       Drive.Is_Canceled := State;

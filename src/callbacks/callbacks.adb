@@ -70,42 +70,43 @@ package body Callbacks is
          when IDM_CANCEL =>
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
             if Selected_Drive >= 0 then
-               Sys_Drives.Set_Cancel_State(Selected_Drive,True);
+               Sys_Drives.Get_Drive(Selected_Drive).Set_Cancel_State(True);
             end if;
 
          when IDM_HMG_IS5 =>
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
             if Selected_Drive >= 0 then
-               Sys_Drives.Set_Cleaning_State(Selected_Drive,True);
-               Sys_Drives.Element(Selected_Drive).Clear(Selected_Drive, Chosen_Algorithm => HMG_IS5);
+               Sys_Drives.Get_Drive(Selected_Drive).Clear(Selected_Drive, Chosen_Algorithm => HMG_IS5);
             end if;
 
          when IDM_HMG_IS5_ENH =>
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
             if Selected_Drive >= 0 then
-               Sys_Drives.Element(Selected_Drive).Clear(Selected_Drive,
-                                                        Chosen_Algorithm => HMG_IS5_ENH);
+               --Sys_Drives.Element(Selected_Drive).Clear(Selected_Drive,
+               --                                         Chosen_Algorithm => HMG_IS5_ENH);
+               Sys_Drives.Get_Drive(Selected_Drive).Set_Cleaning_State(True);
+               Sys_Drives.Get_Drive(Selected_Drive).Clear(Selected_Drive, Chosen_Algorithm => HMG_IS5_ENH);
             end if;
 
          when IDM_GOST_R50739_95 =>
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
             if Selected_Drive >= 0 then
-               Sys_Drives.Element(Selected_Drive).Clear(Selected_Drive,
-                                                        Chosen_Algorithm => GOST_R50739_95);
+               Sys_Drives.Get_Drive(Selected_Drive).Set_Cleaning_State(True);
+               Sys_Drives.Get_Drive(Selected_Drive).Clear(Selected_Drive, Chosen_Algorithm => GOST_R50739_95);
             end if;
 
          when IDM_DoD5220_22_M_E =>
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
             if Selected_Drive >= 0 then
-               Sys_Drives.Element(Selected_Drive).Clear(Selected_Drive,
-                                                        Chosen_Algorithm => DoD5220_22_M_E);
+               Sys_Drives.Get_Drive(Selected_Drive).Set_Cleaning_State(True);
+               Sys_Drives.Get_Drive(Selected_Drive).Clear(Selected_Drive, Chosen_Algorithm => DoD5220_22_M_E);
             end if;
 
          when IDM_SCHNEIER =>
             Selected_Drive := X_Main_Window_Type(Window).Get_Volume_List.Get_Selected_Index;
             if Selected_Drive >= 0 then
-               Sys_Drives.Element(Selected_Drive).Clear(Selected_Drive,
-                                                        Chosen_Algorithm => SCHNEIER);
+               Sys_Drives.Get_Drive(Selected_Drive).Set_Cleaning_State(True);
+               Sys_Drives.Get_Drive(Selected_Drive).Clear(Selected_Drive, Chosen_Algorithm => SCHNEIER);
             end if;
          when others =>
             null;

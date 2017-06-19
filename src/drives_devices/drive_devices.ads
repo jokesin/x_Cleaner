@@ -50,21 +50,21 @@ package Drive_Devices is
 
       type Algorithm is (HMG_IS5,HMG_IS5_ENH,GOST_R50739_95,DoD5220_22_M_E,SCHNEIER);
 
-      procedure Clear(Drive            : Drive_Record;
+      procedure Clear(Drive            : access Drive_Record;
                       Drive_Index      : Natural;
                       Chosen_Algorithm : in Algorithm := HMG_IS5;
                       Buf_Size_Mb_Mult : Win32.ULONG := 1048576);
 
-      function Is_Cleaning(Drive : Drive_Record)
+      function Is_Cleaning(Drive : access Drive_Record)
                            return Boolean;
 
-      procedure Set_Cleaning_State(Drive : in out Drive_Record;
+      procedure Set_Cleaning_State(Drive : access Drive_Record;
                                    State : Boolean);
 
-      function Is_Canceled(Drive : Drive_Record)
+      function Is_Canceled(Drive : access Drive_Record)
                            return Boolean;
 
-      procedure Set_Cancel_State(Drive : in out Drive_Record;
+      procedure Set_Cancel_State(Drive : access Drive_Record;
                                  State : Boolean);
 
       private
@@ -127,8 +127,9 @@ package Drive_Devices is
          --http://unethicalblogger.com/2013/03/09/dynamic-tasks-in-ada.html
          --task termination
 
-         type Clear_Drive_Record is new Drive_Record with
+         type Clear_Drive_Record is tagged
             record
+               Drive_Rec    : access Drive_Record;
                Buf_Size     : Win32.ULONG;
                Buf_Count    : Win32.ULONGLONG;
                Buf_Rem_Size : Win32.ULONGLONG;
@@ -146,7 +147,7 @@ package Drive_Devices is
                          Clear_Algorithm : Algorithm);
 
          --TODO maybe not new element but update current (??)
-         function Init(Drive       : Drive_Record;
+         function Init(Drive       : access Drive_Record;
                        Buf_Size    : Win32.ULONG;
                        Drive_Index : Natural)
                        return Clear_Drive;
@@ -167,22 +168,25 @@ package Drive_Devices is
    package Drives_Container is new Ada.Containers.Indefinite_Vectors(Index_Type   => Natural,
                                                                      Element_Type => Drive_Device.Drive_Record,
                                                                      "="          => Drive_Device."=");
+
    type Drives_Vector is new Drives_Container.Vector with private;
    Drives_Vector_Empty : constant Drives_Vector;
-
    type Drives_Ptr is access all Drives_Vector;
 
    procedure Init;
    function Get_Drives return access Drives_Vector;
-   procedure Set_Cleaning_State(Drives : access Drives_Vector;
-                                Index  : Integer;
-                                State  : Boolean);
-   procedure Set_Cancel_State(Drives : access Drives_Vector;
-                              Index  : Integer;
-                              State  : Boolean);
-   function Is_Canceled(Drives : access Drives_Vector;
-                        Index  : Integer)
-                        return Boolean;
+   function Get_Drive(Drives : access Drives_Vector;
+                      Index  : Integer) return access Drive_Device.Drive_Record;
+
+--     procedure Set_Cleaning_State(Drives : access Drives_Vector;
+--                                  Index  : Integer;
+--                                  State  : Boolean);
+--     procedure Set_Cancel_State(Drives : access Drives_Vector;
+--                                Index  : Integer;
+--                                State  : Boolean);
+--     function Is_Canceled(Drives : access Drives_Vector;
+--                          Index  : Integer)
+--                          return Boolean;
 
 
    --type Drives_Record is tagged private;

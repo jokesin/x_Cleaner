@@ -90,7 +90,8 @@ package body Main_Window is
                                                                  Integer(Cursor_Pos.Y)),Item,SubItem);
          X_Main_Window_Type(Window).Volume_List.Set_Selected_Index(Item);
          declare
-            Sys_Drive : Drive_Device.Drive_Record := Sys_Drives.Element(Item);
+            --Sys_Drive : Drive_Device.Drive_Record := Sys_Drives.Element(Item);
+            Sys_Drive : Drive_Device.Drive := Sys_Drives.Get_Drive(Item);
          begin
             if not Sys_Drive.Is_Cleaning then
                State(Clear_Menu,Command,IDM_CANCEL,Disabled);

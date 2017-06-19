@@ -74,6 +74,13 @@ package body Drive_Devices is
    end Get_Drives;
 
 
+   function Get_Drive(Drives : access Drives_Vector;
+                      Index  : Integer) return access Drive_Device.Drive_Record
+   is
+   begin
+      return Drives.Reference(Index).Element;
+   end Get_Drive;
+
 --     function Get_Vector(Drives : access Drives_Record'Class) return access Drives_Vector
 --     is
 --     begin
@@ -137,47 +144,47 @@ package body Drive_Devices is
    ---
    --Set_Cleaning_State
    ---
-   procedure Set_Cleaning_State(Drives : access Drives_Vector;
-                                Index  : Integer;
-                                State  : Boolean)
-   is
-      use Drive_Device;
-
-      procedure Set_Cl_State(E : in out Drive_Record) is
-      begin
-         E.Set_Cleaning_State(State);
-      end Set_Cl_State;
-      ---
-   begin
-      Drives.Update_Element(Index, Set_Cl_State'Access);
-   end Set_Cleaning_State;
+--     procedure Set_Cleaning_State(Drives : access Drives_Vector;
+--                                  Index  : Integer;
+--                                  State  : Boolean)
+--     is
+--        use Drive_Device;
+--
+--        procedure Set_Cl_State(E : in out Drive_Record) is
+--        begin
+--           E.Set_Cleaning_State(State);
+--        end Set_Cl_State;
+--        ---
+--     begin
+--        Drives.Update_Element(Index, Set_Cl_State'Access);
+--     end Set_Cleaning_State;
 
 
    ---
    -- Set_Cancel_State
    ---
-   procedure Set_Cancel_State(Drives : access Drives_Vector;
-                              Index  : Integer;
-                              State  : Boolean)
-   is
-      use Drive_Device;
-      procedure Set_Cn_State(E : in out Drive_Record) is
-      begin
-         E.Set_Cancel_State(State);
-      end Set_Cn_State;
-      ---
-   begin
-      Drives.Update_Element(Index, Set_Cn_State'Access);
-   end Set_Cancel_State;
+--     procedure Set_Cancel_State(Drives : access Drives_Vector;
+--                                Index  : Integer;
+--                                State  : Boolean)
+--     is
+--        use Drive_Device;
+--        procedure Set_Cn_State(E : in out Drive_Record) is
+--        begin
+--           E.Set_Cancel_State(State);
+--        end Set_Cn_State;
+--        ---
+--     begin
+--        Drives.Update_Element(Index, Set_Cn_State'Access);
+--     end Set_Cancel_State;
 
    ---
    -- Is_Canceled
    ---
-   function Is_Canceled(Drives : access Drives_Vector;
-                        Index  : Integer)
-                        return Boolean is
-   begin
-      return Drives.Element(Index).Is_Canceled;
-   end Is_Canceled;
+--     function Is_Canceled(Drives : access Drives_Vector;
+--                          Index  : Integer)
+--                          return Boolean is
+--     begin
+--        return Drives.Element(Index).Is_Canceled;
+--     end Is_Canceled;
 
 end Drive_Devices;
