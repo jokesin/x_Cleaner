@@ -146,7 +146,7 @@ package body Callbacks is
       Font.Create_Stock_Font(Default_GUI);
       List_Box.Create(Dialog,10,10,380,230,Sort => False,Is_Dynamic => False);
       List_Box.Set_Font(Font);
-      List_Box.Add("XCleaner (v 1.2.3) clears selected volume with special algorithm");
+      List_Box.Add("XCleaner (v 1.3) clears selected volume with special algorithm");
       List_Box.Add("");
       List_Box.Add("Copyright (C) 2016  George Ivanov");
       List_Box.Add("");
