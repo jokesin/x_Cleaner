@@ -1,6 +1,6 @@
 with "win32ada", "..\..\Tools\gwindows\gwindows";
 
-project X_Cleaner is
+project XCleaner is
 
    for Object_Dir use "./obj";
    for Exec_Dir use "./bin";
@@ -68,5 +68,5 @@ project X_Cleaner is
       end case;
    end Naming;
 
-end X_Cleaner;
+end XCleaner;
 

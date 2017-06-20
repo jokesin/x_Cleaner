@@ -16,7 +16,6 @@
 --        You should have received a copy of the GNU General Public License
 --        along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------------
-
 with GWindows.GStrings; use GWindows.GStrings;
 
 separate (Drive_Devices.Drive_Device.Clear_Drive_Device)
@@ -31,7 +30,6 @@ is
    --Delay_Time : Duration;-- make dynamic
    Clear_Algorithm : Algorithm;
    Drv_List : Main_Window.List_View.X_List_View:=Main_Window.Get_X_Main.Get_Volume_List;
-
    -- Common generic clear proc
 
    generic
@@ -89,7 +87,6 @@ is
       Drv_List.Set_Algorithm_Name(Data.Drive_Index,"HMG IS5 (Enhanced)");
       -- Set pass count
       Data.Pass_Count := 3;
-
       -- Clean drive
       for Pass in 1..3 loop
          Data.Buf_Index:=0;

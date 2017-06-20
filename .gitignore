@@ -16,6 +16,9 @@ GNAT-TEMP-*.TMP
 b__*.ad*
 gpsauto.cgpr
 *-loc.xml
+*.stderr
+*.stdout
+clang_ref_cache.db
 
 .#*#
 
