@@ -127,6 +127,19 @@ package Drive_Devices is
          --http://unethicalblogger.com/2013/03/09/dynamic-tasks-in-ada.html
          --task termination
 
+         type Clear_Drive_Record is tagged private;
+
+         procedure Clear(Self            : access Clear_Drive_Record;
+                         Clear_Algorithm : Algorithm);
+
+         --TODO maybe not new element but update current (??)
+         function Init(Drive       : access Drive_Record;
+                       Buf_Size    : Win32.ULONG;
+                       Drive_Index : Natural)
+                       return Clear_Drive;
+
+      private
+
          type Clear_Drive_Record is tagged
             record
                Drive_Rec    : access Drive_Record;
@@ -142,17 +155,6 @@ package Drive_Devices is
                Pass_Count  : Positive;
                Drive_Index : Natural;
             end record;
-
-         procedure Clear(Self            : access Clear_Drive_Record;
-                         Clear_Algorithm : Algorithm);
-
-         --TODO maybe not new element but update current (??)
-         function Init(Drive       : access Drive_Record;
-                       Buf_Size    : Win32.ULONG;
-                       Drive_Index : Natural)
-                       return Clear_Drive;
-
-      private
 
          function Open(Self : in out Clear_Drive_Record) return Boolean with Inline;
          function Lock(Self : Clear_Drive_Record) return Boolean with Inline;
