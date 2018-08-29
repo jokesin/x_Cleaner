@@ -86,22 +86,40 @@ is
       return New_Style;
    end Get_Not_Resizeable_Window_Style;
 
+   WM_SETICON : constant := 16#80#;
+   ICON_SMALL : constant := 0;
+   ICON_BIG   : constant := 1;
+
    X_Icon : HICON := LoadIcon(GetModuleHandle(null),PCSTR(MAKEINTRESOURCE(1001)));
-   function HICON_To_LONG is new Ada.Unchecked_Conversion(HICON,LONG);
-   Ret_Val : LONG;
+   pragma Warnings (Off, "types for unchecked conversion have different sizes");
+     --function HICON_To_LONG is new Ada.Unchecked_Conversion(HICON,LONG);
+     function HICON_To_LONG_PTR is new Ada.Unchecked_Conversion(HICON,LONG_PTR);
+   pragma Warnings (On, "types for unchecked conversion have different sizes");
+
+   Ret_LONG : LONG;
+   Ret_LONG_PTR : LONG_PTR;
 begin
    X_Main.Create("XCleaner");
-   Ret_Val := LONG(SetClassLong(HWND(X_Main.Handle),GCL_HICON,HICON_To_LONG(X_Icon)));
+
+   --  Ret_Val := LONG(SetClassLong(HWND(X_Main.Handle),GCL_HICON,HICON_To_LONG(X_Icon)));
+   Ret_LONG_PTR := SendMessage(HWND(X_Main.Handle),
+                               WM_SETICON,
+                               ICON_SMALL,
+                               HICON_To_LONG_PTR(X_Icon));
+   Ret_LONG_PTR := SendMessage(HWND(X_Main.Handle),
+                               WM_SETICON,
+                               ICON_BIG,
+                               HICON_To_LONG_PTR(X_Icon));
    X_Main.Size(600,300);
    X_Main.Visible(True);
 
    -- Disable maximize button
-   Ret_Val:= SetWindowLong(HWND(X_Main.Handle),GWL_STYLE,
+   Ret_LONG:= SetWindowLong(HWND(X_Main.Handle),GWL_STYLE,
                            Get_Not_Resizeable_Window_Style(GetWindowLong(HWND(X_Main.Handle),GWL_STYLE)));
 
    -- Setup Listview
    X_List.Create(X_Main.all, 0, 0, 600, 300, Single, Report_View);
-   Ret_Val:= LONG(SendMessage(HWND(X_List.Handle),LVM_SETEXTENDEDLISVIEWSTYLE,0,LVS_EX_FULLROWSELECT));
+   Ret_LONG_PTR:= SendMessage(HWND(X_List.Handle),LVM_SETEXTENDEDLISVIEWSTYLE,0,LVS_EX_FULLROWSELECT);
 
    X_List.Insert_Column("Volume",0,60);
    X_List.Insert_Column("Size (Mb)",1,75);

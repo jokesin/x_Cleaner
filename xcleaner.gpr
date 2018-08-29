@@ -1,4 +1,4 @@
-with "win32ada", "..\..\Tools\gwindows\gwindows";
+with "win32ada", "..\..\GNAVI\gwindows\gwindows";
 
 project XCleaner is
 
@@ -21,7 +21,15 @@ project XCleaner is
    end case;
 
    package Ide is
-      for Vcs_Kind use "Subversion Windows";
+
+      case Win32Ada_Build is
+
+         when "default" =>
+            for Vcs_Kind use "git";
+
+         when "relocatable" =>
+            for Vcs_Kind use "Subversion Windows";
+      end case;
    end Ide;
 
    package Builder is
@@ -46,7 +54,7 @@ project XCleaner is
       case Win32Ada_Build is
 
          when "default" =>
-            for Default_Switches ("ada") use ("-gnat12", "-O2");
+            for Default_Switches ("ada") use ("-O2", "-gnat12", "-g");
 
          when "relocatable" =>
 
@@ -54,6 +62,15 @@ project XCleaner is
    end Compiler;
 
    package Linker is
+
+      case Win32Ada_Build is
+
+         when "default" =>
+            for Switches ("ada") use ("-g");
+
+         when "relocatable" =>
+
+      end case;
    end Linker;
 
    package Naming is
